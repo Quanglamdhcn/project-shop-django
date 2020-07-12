@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+	Thêm sản phẩm
+{% endblock title %}
+
+{% block content %}
+<div class="page-title page-title--classic bg-11 mb-0"></div>
+
+    <section class="section-detail pb-30">
+    	<div class="container">
+    		<div class="br-product br-product-detail br-product-slide-vertical mt--90">
+    			<div class="row">
+					<div id="show_image">
+						{% include "shop/includes/product_photos_create.html" %}
+					</div>
+
+    			<div id="show-content" class="col-lg-6">
+
+    				<div style="display:none" id="show-msg-success">
+						<div class="alert alert-dismissible alert-success">
+							<i class="fa fa-check" aria-hidden="true"></i>
+							<strong>Thành công</strong> Hãy tải một số hình ảnh cho sản phẩm 
+						</div>
+
+						<div id="show-upload-image" class="form-group">
+							<button type="button" class="btn-primary btn  btn-sm js-upload-photos">
+					          <span class="fa fa-cloud-upload"></span> tải ảnh
+					        </button>
+							<input id="fileupload" type="file" name="file" multiple
+							           style="display: none;"
+							           data-url="{% url "shop:basic_upload" %}"
+							           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+						</div>
+					</div>
+
+					<form disabled data-href="{% url "shop:ajax_upload_product" %}" id="upload_product_form" method="post" novalidate>
+						{% csrf_token %}
+						<div class="form-group">
+							{% render_field form.name placeholder="Tên sản phẩm" class="form-control" data-href="/ajax/check/name-product/" %}
+							<small id="ms_id_name" class="form-text text-muted" style="color:#ff0505;display:none">Bạn phải đặt tên cho sản phẩm</small>
+				<!-- 			<small class="form-text text-muted" style="color:#ff0505">Sản phẩm này đã tồn tại</small> -->
+						</div>
+						<div class="row">
+    						<div class="col-xs-12">
+								<div class="form-group">
+									{% render_field form.size class="form-control" %}
+									{% if form.size.errors %}
+									<small class="form-text text-muted" style="color:#ff0505">Giá không hợp lệ</small>
+									{% endif %}
+								</div>
+							</div>
+							<div class="col-xs-3">
+								<div class="form-group">
+									{% render_field form.price placeholder="Ngàn VND" class="form-control" %}
+									<small id="ms_id_price" class="form-text text-muted" style="display:none;color:#ff0505">Giá trị không hợp lệ</small>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							{% render_field form.description placeholder="Miêu tả" rows="5" class="form-control" %}
+							<small id="ms_id_description" class="form-text text-muted" style="display:none;color:#ff0505">Hãy miêu tả gì đó về sản phẩm</small>
+						</div>
+
+						<div class="br-product__action mb-15">
+							<div class="tb">
+								<div class="table-cell-center">
+									<button class="btn btn-default btn-cart js-submit">
+										<span>Tạo sản phẩm</span>
+									</button>
+								</div>
+							</div>
+						</div>
+
+					</form>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+	$(function(){
+		$(".js-upload-photos").click(function () {
+		$("#fileupload").click();
+ 	 });
+
+	  $("#fileupload").fileupload({
+	    url: $("#fileupload").attr('data-url'),
+	    dataType: 'json',
+	    done: function (e, data) {
+	      if (data.result.is_valid) {
+	        $('#show_image').html(data.result.photo_html);
+	      }
+	    }
+	  });
+	});
+</script>
+<script src="{% static "js/shop/upload_product.js" %}"></script>
+<script src="{% static "js/shop/detail_show_image.js" %}"></script>
+{% endblock scripts %}

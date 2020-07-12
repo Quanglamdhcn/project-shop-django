@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Quản lý shop
+{% endblock title %}
+
+{% block content %}
+<main class="site-typo">
+    <div class="container">
+    	<section class="section pb-40">
+    		<h2 class="h1 text-uppercase text-center mb-25">Quản lý shop</h2>
+    		<div class="br-heading">
+
+                <div class="row">
+
+                    <div style="padding-top:30px" class="col-6 col-sm-3 col-lg-3 col-xl-2"><a href="{% url "shop:upload_product" %}" class="btn btn-success btn-lg"> <span class="fa fa-cloud-upload fa-lg"></span> Thêm sản phẩm </a></div>
+
+                    <div style="padding-top:30px" class="col-6 col-sm-3 col-lg-3 col-xl-2"><a href="{% url "orders:graph" %}" class="btn btn-info btn-lg"><span class="fa fa-area-chart fa-lg"></span> Biểu đồ bán hàng</a></div>
+
+                    <div style="padding-top:30px" class="col-6 col-sm-3 col-lg-3 col-xl-2"><a href="{% url 'orders:manage_orders' %}" class="btn btn-danger btn-lg"><span class="fa fa-archive fa-lg"></span> Xem đơn đặt hàng</a></div>
+
+                    <div style="padding-top:30px" class="col-6 col-sm-3 col-lg-3 col-xl-2"><a href="{% url 'coupons:coupon_manage' %}" class="btn btn-warning btn-lg"><span class="fa fa-qrcode fa-lg"></span> Cập nhật mã giảm giá</a></div>
+
+                    <div style="padding-top:30px" class="col-6 col-sm-3 col-lg-3 col-xl-2"> <a href="{% url 'accounts:contact_manage' %}" class="btn btn-primary btn-lg"><span class="fa fa-envelope-o fa-lg"></span> Tin nhắn khác hàng</a></div>
+
+                  </div>
+
+    		</div>
+    	</section>
+    </div>
+</main>
+{% endblock content %}

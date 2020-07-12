@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block stylesheet %}
+
+
+   <link rel="stylesheet" href="{% static "css/jquery/jquery.datetimepicker.min.css" %}" />
+  <script src="{% static "js/jquery/jquery.datetimepicker.full.min.js" %}"></script>
+{% endblock stylesheet %}
+
+{% block title %}
+	Quản lý mã giảm giá
+{% endblock title %}
+
+{% block content %}
+	<main class="site-main">
+		<section class="section table-cart">
+			<div class="container">
+				<div style="display:none" class="alert alert-dismissible alert-success">
+					<i class="fa fa-check" aria-hidden="true"></i>
+					<strong>Một mã đã được thêm</strong>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h1>Có {{coupons.count}} mã giảm giá</h1>
+						</div>
+						<div class="bs-component">
+
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Tên mã </th>
+										<th scope="col">Ngày bắt đầu </th>
+										<th scope="col">Ngày kết thúc</th>
+										<th scope="col">% giảm</th>
+										<th scope="col">Kích hoạt</th>
+										<th scope="col">Số Order</th>
+										<th scope="col">Sửa</th>
+										<th scope="col">Xóa</th>
+									</tr>
+								</thead>
+								<tbody id="coupons">
+									{% include "coupons/includes/coupon_tbody.html" %}
+								</tbody>
+							</table>
+							<div class="js_include_form">
+								
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xl-5">
+						<a data-href="{% url "coupons:coupon_add" %}" class="btn btn-info" id="create_coupon"><i class="fa fa-pencil"></i> Thêm mã</a>
+						{% if coupons %}
+						<a class="btn btn-danger js_delte_all_item" data-href="{% url "coupons:coupon_delete_all" %}"><i class="fa fa-trash-o"></i> Xóa tất cả</a>
+						{% endif %}
+					</div>
+				</div>
+
+			</div>
+		</section>
+		
+
+	</main>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "js/coupons/manage.js" %}"></script>
+{% endblock scripts %}

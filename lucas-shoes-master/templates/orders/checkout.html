@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+	Thanh toán đơn hàng
+{% endblock title %}
+
+{% block content %}
+	<main>
+		<section class="section pb-60">
+			<div class="container">
+				{% if cart|length > 0 %}
+					<!-- <div class="text-alert mb-40"><p>Returning customer? <a href="#" class="bold">Click here to login</a></p></div> -->
+				<div class="row">
+					<form id="js-checkout" data-href="{% url "orders:checkout" %}" method="post" novalidate>
+						{% csrf_token %}
+					<div class="col-md-6 pb-40">
+						<div class="br-form-checkout">
+								<h2 class="text-uppercase fz-30 mb-20">Thông tin nhận hàng</h2>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="{{form.first_name.id_for_label}}">{{form.first_name.label}}<sup>*</sup></label>
+											{% render_field form.first_name class="form-control dark" placeholder="Họ" %}
+											<span class="{{form.first_name.id_for_label}}"></span>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="{{form.last_name.id_for_label}}">{{form.last_name.label}}<sup>*</sup></label>
+											{% render_field form.last_name class="form-control dark" placeholder="Tên" %}
+											<span class="{{form.last_name.id_for_label}}"></span>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="{{form.address.id_for_label}}">{{form.address.label}}<sup>*</sup></label>
+									{% render_field form.address class="form-control dark" placeholder="Địa chỉ" %}
+									<span class="{{form.address.id_for_label}}"></span>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="{{form.city.id_for_label}}">{{form.city.label}} <sup>*</sup></label>
+											{% render_field form.city class="form-control dark" placeholder="Thành phố" %}
+											<span class="{{form.city.id_for_label}}"></span>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="{{form.email.id_for_label}}">{{form.email.label}} <sup>*</sup></label>
+											{% render_field form.email class="form-control dark" placeholder="Địa chỉ email" %}
+											<span class="{{form.email.id_for_label}}"></span>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="{{form.phone.id_for_label}}">{{form.phone.label}} <sup>*</sup></label>
+											{% render_field form.phone class="form-control dark" placeholder="Số điện thoại" %}
+											<span class="{{form.phone.id_for_label}}"></span>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="{{form.note.id_for_label}}">{{form.note.label}}</label>
+									{% render_field form.note rows="3" class="form-control dark" placeholder="Thông tin gì muốn shop cần lưu ý" %}
+								</div>
+						<!-- 		<label class="c-input c-checkbox dark"><input type="checkbox"> <span class="c-indicator"></span> Create an account?</label> -->
+
+						</div>
+					</div>
+
+					<div class="col-md-5 col-md-offset-1 pb-40">
+						<div class="payment-right">
+							<h2 class="text-uppercase fz-30 mb-30">Đơn hàng chi tiết</h2>
+							<div class="list-product-mini">
+								<ul class="list-style-none">
+									{% for item in cart  %}
+									{% with  product=item.product  %}
+									<li>
+										<div class="product-mini">
+											<a href="#" class="product-mini__img"><img src="{{product.photos.first.file.url}}" alt=""><span>{{item.quantity}}</span></a>
+											<div class="product-mini__body">
+												<h4 class="br-product__name"><a href="{% url "shop:product_detail" product.slug %}" tabindex="0">{{product.name}}</a></h4>
+												<span class="br-product__price">{{product.price|intcomma}} vnđ x {{item.quantity}}</span>
+												/ <span class="br-product__price">size : {{item.size}}</span>
+												
+											</div>
+											<div class="product-mini__button">
+												<a data-href="{% url "cart:ajax_cart_remove" product.id item.size %}" class="close js_remove_cart"><i class="fa fa-times" aria-hidden="true"></i></a>
+											</div>
+										</div>
+									</li>
+									{% endwith %}
+									{% endfor %}
+
+								</ul>
+
+								<div class="total-product overflow-hidden mb-40">
+									<h5 class="text-uppercase"><span class="pull-left">Tổng thanh toán:</span> <span class="pull-right total_price">{{cart.get_total_price|intcomma}} vnđ</span></h5>
+									<br>
+									{% if cart.coupon %}
+										<h5 class="text-uppercase"><span class="pull-left">Giảm:</span> <span class="pull-right total_price">- {{cart.get_discount|intcomma}} vnđ ( {{cart.coupon.discount}} %)</span></h5>
+										<br>
+										<h5 class="text-uppercase"><span class="pull-left">Tổng thanh toán áp dụng giảm giá:</span> <span class="pull-right total_price">{{cart.get_total_price_after_discount|intcomma}} vnđ</span></h5>
+								{% endif %}
+								</div>
+
+							</div>
+
+							<h2 class="text-uppercase fz-30 mb-30">Phương thức thanh toán</h2>
+
+							<div class="mb-40">
+								<div class="br-checkbox mb-30">
+									<div class="mb-15">
+										<label class="c-input c-checkbox dark"><input id="truc_tiep" type="checkbox"> <span class="c-indicator"></span> Thanh toán trực tiếp</label>
+									</div>
+									<p style="display:none;" class="msg-truc-tiep">Sử dụng phương thức thanh toán trực tiếp nghĩa rằng bạn sẽ thanh toán sau khi nhận được hàng.
+									<br>
+									Trường hợp sản phẩm bị lỗi hoặc có bất cứ thắc mắc nào bạn có thể <a href="{% url 'accounts:contact' %}">liên hệ</a> với Shop để được hỗ trợ.</p>
+								</div>
+								<div class="pb-20"><label class="c-input c-checkbox dark"><input type="checkbox"> <span class="c-indicator"></span> Credit Card</label></div>
+
+								<ul class="list-payments list-inline">
+									<li><a href="#" title=""><img src="{% static "img-demo/utils/mastercard.png" %}" alt=""></a></li>
+									<li><a href="#" title=""><img src="{% static "img-demo/utils/paypal.png" %}" alt=""></a></li>
+									<li><a href="#" title=""><img src="{% static "img-demo/utils/visa.png" %}" alt=""></a></li>
+								</ul>
+							</div>
+
+							<div class="wc-proceed-to-checkout"><button type="submit" name="ACTION" value="CHECKOUT" class="btn btn-lg btn-primary">Thanh toán</button></div>
+						</div>
+					</div>
+					</form>
+				</div>
+				{% else %}
+				<div class="row">
+					<div class="col-md-6 pb-40">
+						<div class="br-form-checkout">
+							<h2 class="text-uppercase fz-30 mb-20">Đơn đặt hàng trống!</h2>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</section>
+	</main>
+{% endblock content %}
+
+{% block scripts %}
+	<script src="{% static "js/orders/checkout.js" %}"></script>
+	<script>
+	$(function(){
+		function numberWithCommas(x) {
+	    	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		$('.js_remove_cart').click(function(){
+			var $el = $(this);
+
+			$.ajax({
+				url: $(this).attr("data-href"),
+				datType: 'json',
+				type: 'get',
+				success : function(data){
+					$el.closest('li').remove();
+					$('.total_price').text(numberWithCommas(data.total_price)+" VNĐ");
+				}
+			});
+		});
+
+		$('input:checkbox').change(function(){
+			if ($('#truc_tiep').prop("checked")){
+				$('.msg-truc-tiep').show();
+			} else {
+				$('.msg-truc-tiep').hide();
+			}
+		});
+
+	});
+	</script>
+{% endblock scripts %}

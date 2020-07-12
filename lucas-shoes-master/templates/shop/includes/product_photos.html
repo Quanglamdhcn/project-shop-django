@@ -1,0 +1,42 @@
+{% load static %}
+{% load thumbnail %}
+
+<div class="col-lg-6">
+	<div class="br-product__media br-product-slide-vertical-image">
+
+		<div class="br-product__image">
+			<div class="js-br-product-image">
+				<div>
+                    <div class="br-product__thumb" id="js_replate_image">
+                    	{% thumbnail product.photos.first.file "458x617" as im %}
+							<img src="{{im.url}}" class="photo_large" alt="">
+						{% endthumbnail %}
+                    </div>
+                </div>
+			</div>
+
+		</div>
+		<div class="br-product__label-wrapper"><span class="br-product__label sale">SALE</span></div>
+
+		<div class="br-product-nav-wrapper">
+			<div class="js-br-product-nav br-slick-white">
+                {% for photo in product.photos.all  %}
+				<div class="br-product-nav__item" >
+					<div class="br-product__thumb js_re" {% if forloop.first %}
+       							style="border: 3px solid #2bb5d6"
+       						{% endif %}>
+					{% thumbnail photo.file "458x617" as big %}
+    					{% thumbnail photo.file "78x107" as small %}
+       						<img src="{{small.url}}" class="click_image" data-src="{{big.url}}" alt="">
+    					{% endthumbnail %}
+					{% endthumbnail %}
+					
+					</div>
+				</div>
+                {% endfor %}
+				
+			</div>
+		</div>
+	</div>
+
+</div>

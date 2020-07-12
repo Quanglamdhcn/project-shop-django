@@ -1,0 +1,58 @@
+{% load humanize %}
+{% load thumbnail %}
+{% load widget_tweaks %}
+<div class="row">
+	{% for product in products  %}
+	<div class="col-md-3 col-sm-6 col-tn-6">
+		<div class="br-product br-product--grid">
+			<div class="br-product__media">
+				<div class="br-product__thumb">
+					<a href="{% url "shop:product_detail" slug=product.slug %}">
+						{% thumbnail product.photos.first.file "262x360" as im %}
+						<img src="{{im.url}}" alt="">
+						{% endthumbnail %}
+					</a>
+				</div>
+			<!-- 	<div class="br-product__label-wrapper">
+				<span class="br-product__label new">NEW</span>
+			</div> -->
+				<div class="br-product__action">
+					<div class="tb">
+						<div class="table-cell-center">
+							<form method="post" action="{% url "cart:cart_add" product.id %}">
+								{% csrf_token %}
+								<div style="display:none">
+									{{cart_form}}
+								</div>
+								<a class="btn js_add_cart" data-toggle="tooltip" data-placement="top" title="" data-original-title="Thêm vào giỏ hàng">
+									<span class="sr-only">Thêm vào giỏ hàng</span> <i class="fa fa-shopping-bag"></i>
+								</a>
+							</form>
+						</div>
+
+						<div class="table-cell-center">
+							<a class="btn" href="{% url "shop:product_detail" product.slug %}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xem"><span class="sr-only">Xem</span> <i class="fa fa-eye"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="br-product__main">
+				<h4 class="br-product__name"><a href="{% url "shop:product_detail" slug=product.slug %}">{{product.name}}</a></h4>
+				<span class="br-product__price">{{product.price|intcomma}} vnđ</span>
+			</div>
+			{% if request.user.is_staff %}
+			<div class="row">
+				<div class="col-xl-5">
+					<a data-href="{% url "shop:delete_product" product.pk %}" class="btn btn-danger delete_product"><i class="fa fa-trash-o"></i> Xóa</a>
+					<a href="{% url "shop:upadte_product" product.pk %}" class="btn btn-info"><i class="fa fa-pencil"></i> Sửa</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+		
+	{% endfor %}
+
+</div>
+
+{% include "shop/includes/pagination.html" with page=products %}

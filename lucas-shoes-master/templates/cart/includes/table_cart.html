@@ -1,0 +1,25 @@
+{% load humanize %}
+{% for item in cart  %}
+	{% with product=item.product %}
+	<tr>
+		<td><a class="cart-image" href="{% url "shop:product_detail" product.slug %}"><img width="78" height="107" src="{{product.photos.first.file.url}}" alt=""></a></td>
+
+		<td><a href="{% url "shop:product_detail" product.slug %}" class="fz-16">{{product.name}}</a></td>
+
+		<td><span class="br-product__price">{{product.price|intcomma}} vnđ</span></td>
+
+		<td>
+			<form action="" method="post">
+				{% csrf_token %}
+				{{item.update_quantity_form.size}}
+				{{item.update_quantity_form.quantity}}
+				{{item.update_quantity_form.update_quantity}}
+			</form>
+		</td>
+
+		<td><span class="br-product__price">{{item.total_price|intcomma}} vnđ</span></td>
+
+		<td><a class="red close" href="{% url "cart:cart_remove" product.id item.size %}"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+	</tr>
+	{% endwith %}
+{% endfor %}

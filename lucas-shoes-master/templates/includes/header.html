@@ -1,0 +1,88 @@
+{% load static %}
+{% load cart_tag %}
+<header class="site-header">
+	{% if section == 'home' %}
+	<div class="br-promotion br-promotion hidden-xs">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-xs-10"><span class="text-uppercase small">Tham gia mua sắp nhận ngay mã giảm giá</span> <a href="{% url "shop:product_list" %}" class="btn btn-outline btn-sm">shop now</a></div>
+				<div class="col-sm-2 col-xs-2"><button type="button" class="close"><i class="fa fa-times" aria-hidden="true"></i></button></div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="br-board br-board--white hidden-xs">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 col-sm-4">
+					<span class="small">Chào mừng bạn đến với Lucas Shoes</span>
+				</div>
+				<div class="col-md-6 col-sm-4">
+					<div class="text-center">
+						<a href="{% url "shop:home" %}" class="br-logo"><img src="{% static "img/logo/logo-1.png" %}" alt=""></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<nav class="awemenu-nav awemenu-fadeup awemenu-nav--white">
+		<div class="container">
+			<div class="awemenu-container">
+				<div class="navbar-icons">
+					<div class="dropdown dropdown-animation">
+						<a href="shopping-cart.html" data-toggle="dropdown" role="button"><i class="fa fa-search" aria-hidden="true"></i></a>
+						<div class="dropdown-menu dropdown-search">
+							<div class="form-search">
+								<form action="">
+									<label class="sr-only">Tìm kiếm</label>
+									<input name="search" type="text" placeholder="Tìm kiếm sản phẩm..." value="">
+									<button type="button" class="sr-only"><i class="fa fa-search" aria-hidden="true"></i></button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div class="dropdown-right">
+						{% cart_header request=request %}
+						
+							<div class="dropdown dropdown-animation">
+								<a href="account.html" data-toggle="dropdown" role="button"><i class="fa fa-user" aria-hidden="true"></i></a>
+								<div class="dropdown-menu dropdown-account">
+									<span>Xin chào!</span>
+									<h5 class="text-uppercase mb-20">{{request.user.username}}</h5>
+									<div class="avatar mb-25">
+										<img src="{% static "img/avatar.png" %}" height="67" width="67" alt="">
+									</div>
+									<!-- <span>Account infomation</span> -->
+									{% if request.user.is_authenticated %}
+										<a href="{% url 'accounts:logout' %}" class="account-link">Đăng xuất</a>
+									{% else %}
+										<a href="{% url 'accounts:login' %}" class="account-link">Đăng Nhập</a>
+									{% endif %}
+										
+								</div>
+							</div>
+
+					</div>
+				</div>
+
+				<div class="awemenu-logo"><a href="index-2.html"><img src="{% static "img/logo-lucas-1.png" %}" alt=""></a></div>
+
+				<ul class="main-navigation awemenu">
+
+					<li class="{% if section == "home" %}active{% endif %} awemenu-item"><a href="{% url "shop:home" %}">Trang chủ</a></li>
+					<li class="{% if section == "shop" %}active{% endif %} awemenu-item"><a href="{% url "shop:product_list" %}">Mua sắm</a></li>
+		<!-- 			<li class="{% if section == "blog" %}active{% endif %} awemenu-item"><a href="">Blog</a></li> -->
+					<li class="{% if section == "about" %}active{% endif %} awemenu-item"><a href="{% url "shop:about" %}">Giới thiệu</a></li>
+					<li class="{% if section == "contact" %}active{% endif %} awemenu-item"><a href="{% url "accounts:contact" %}">Liên hệ</a></li>
+					{% if request.user.is_staff %}
+					<li class="{% if section == "manage" %}active{% endif %} awemenu-item"><a href="{% url "shop:manage_shop" %}" style="color:#d27575">Dành cho quản lý</a></li>
+					{% endif %}
+					
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>

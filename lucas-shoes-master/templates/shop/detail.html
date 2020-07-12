@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load humanize %}
+
+{% block title %}
+	{{product.name}}
+{% endblock title %}
+
+{% block content %}
+	<div class="page-title page-title--classic mb-0" style="background-image:url({% static "img/page-title/7.jpg" %})"></div>
+
+    <section class="section-detail pb-30">
+    	<div class="container">
+    		<div class="br-product br-product-detail br-product-slide-vertical mt--90">
+    			<div class="row" id="show_image">
+                    {% include "shop/includes/product_photos.html" %}
+
+    			<div class="col-lg-6">
+    				<div class="br-product-detail__container">
+    					<div class="br-product-detail__main">
+    						<h2 class="text-uppercase normal">{{product.name}}</h2>
+    						<span id="product_price" class="br-product__price fz-16">{{product.price|intcomma}}</span> vnđ
+
+    						<div class="br-product__description"><p>{{product.description}}</p></div>
+
+    						<form method="post" action="{% url "cart:cart_add" product.id %}" class="mb-20" novalidate>
+                                {% csrf_token %}
+
+    							<div class="row">
+    								<div class="col-xs-4">
+                                        <label class="control-label">{{cart_form.size.label}}</label>
+                                        {{cart_form.size}}
+                                       
+    								</div>
+    								<div class="col-xs-3">
+                                        <label class="control-label">{{cart_form.quantity.label}}</label>
+                                        {{cart_form.quantity}}
+                                    </div>
+    							</div>
+
+        						<div class="variation-price mb-20">
+        							Tổng : <span id="total_price_detail" price="{{product.price}}" class="br-product__price">{{product.price|intcomma}}</span> vnđ
+        						</div>
+
+        						<div class="br-product__action mb-15">
+        							<div class="tb">
+        								<div class="table-cell-center">
+                                            <button type="submit" class="btn btn-default btn-cart"><i class="fa fa-shopping-bag"></i> <span>Thêm vào giỏ hàng</span></button>
+                                        </div>
+                                
+        							</div>
+        						</div>
+                            </form>
+
+    					</div>
+
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</section>
+
+<section class="pt-80 pb-60">
+	<div class="container">
+		<h2 class="br-title text-center">Có thể bạn cũng thích</h2>
+
+		<div class="row js-new-arrivals br-slick-white">
+			<div class="col-md-3"><div class="br-product br-product--grid"><div class="br-product__media"><div class="br-product__thumb"><a href="#"><img src="img-demo/products/33.jpg" alt=""></a></div><div class="br-product__label-wrapper"><span class="br-product__label new">NEW</span></div><div class="br-product__action"><div class="tb"><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="cart"><span class="sr-only">cart</span> <i class="fa fa-shopping-bag"></i></a></div><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="wish list"><span class="sr-only">wish list</span> <i class="fa fa-heart"></i></a></div><div class="table-cell-center"><a class="btn js-product-popup" href="product-popup.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="quick view"><span class="sr-only">quick view</span> <i class="fa fa-eye"></i></a></div></div></div></div><div class="br-product__main"><h4 class="br-product__name"><a href="#">Glasses Dramos</a></h4><span class="br-product__price">$168.00</span></div></div></div>
+
+			<div class="col-md-3"><div class="br-product br-product--grid"><div class="br-product__media"><div class="br-product__thumb"><a href="#"><img src="img-demo/products/34.jpg" alt=""></a></div><div class="br-product__label-wrapper"><span class="br-product__label hot">HOT</span></div><div class="br-product__action"><div class="tb"><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="cart"><span class="sr-only">cart</span> <i class="fa fa-shopping-bag"></i></a></div><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="wish list"><span class="sr-only">wish list</span> <i class="fa fa-heart"></i></a></div><div class="table-cell-center"><a class="btn js-product-popup" href="product-popup.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="quick view"><span class="sr-only">quick view</span> <i class="fa fa-eye"></i></a></div></div></div></div><div class="br-product__main"><h4 class="br-product__name"><a href="#">Parker crossbody bag</a></h4><span class="br-product__price">$98.00</span></div></div></div>
+
+			<div class="col-md-3"><div class="br-product br-product--grid"><div class="br-product__media"><div class="br-product__thumb"><a href="#"><img src="img-demo/products/35.jpg" alt=""></a></div><div class="br-product__label-wrapper"><span class="br-product__label sale">SALE</span></div><div class="br-product__action"><div class="tb"><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="cart"><span class="sr-only">cart</span> <i class="fa fa-shopping-bag"></i></a></div><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="wish list"><span class="sr-only">wish list</span> <i class="fa fa-heart"></i></a></div><div class="table-cell-center"><a class="btn js-product-popup" href="product-popup.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="quick view"><span class="sr-only">quick view</span> <i class="fa fa-eye"></i></a></div></div></div></div><div class="br-product__main"><h4 class="br-product__name"><a href="#">Glasses Dramos</a></h4><span class="br-product__price">$49.50 <del>$60.00</del></span></div></div></div>
+
+			<div class="col-md-3"><div class="br-product br-product--grid"><div class="br-product__media"><div class="br-product__thumb"><a href="#"><img src="img-demo/products/36.jpg" alt=""></a></div><div class="br-product__label-wrapper"><span class="br-product__label popular">POPULAR</span> <span class="br-product__label hot">HOT</span></div><div class="br-product__action"><div class="tb"><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="cart"><span class="sr-only">cart</span> <i class="fa fa-shopping-bag"></i></a></div><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="wish list"><span class="sr-only">wish list</span> <i class="fa fa-heart"></i></a></div><div class="table-cell-center"><a class="btn js-product-popup" href="product-popup.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="quick view"><span class="sr-only">quick view</span> <i class="fa fa-eye"></i></a></div></div></div></div><div class="br-product__main"><h4 class="br-product__name"><a href="#">Glasses Dramos</a></h4><span class="br-product__price">$32.000</span></div></div></div>
+
+			<div class="col-md-3"><div class="br-product br-product--grid"><div class="br-product__media"><div class="br-product__thumb"><a href="#"><img src="img-demo/products/30.jpg" alt=""></a></div><div class="br-product__label-wrapper"><span class="br-product__label hot">HOT</span></div><div class="br-product__action"><div class="tb"><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="cart"><span class="sr-only">cart</span> <i class="fa fa-shopping-bag"></i></a></div><div class="table-cell-center"><a class="btn" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="wish list"><span class="sr-only">wish list</span> <i class="fa fa-heart"></i></a></div><div class="table-cell-center"><a class="btn js-product-popup" href="product-popup.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="quick view"><span class="sr-only">quick view</span> <i class="fa fa-eye"></i></a></div></div></div></div><div class="br-product__main"><h4 class="br-product__name"><a href="#">Glasses Dramos</a></h4><span class="br-product__price">$32.00</span></div></div></div>
+		</div>
+	</div>
+</section>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static "js/shop/detail_product.js" %}"></script>
+    <script src="{% static "js/shop/detail_show_image.js" %}"></script>
+{% endblock scripts %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}
+	Đăng nhập
+{% endblock title %}
+
+{% block content %}
+	<main class="site-main">
+		<section class="section pb-80">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4 col-md-offset-1">
+						<h2 class="heading-page fz-25 mb-30">Đăng nhập Admin</h2>
+						<form method="post" class="br-login">
+							{% csrf_token %}
+							<p class="form-row">
+								<label class="sr-only">Tên người dùng</label>
+								{% render_field form.username placeholder="Tên người dùng" %}
+							</p>
+
+							<p class="form-row mb-30">
+								<label class="sr-only">Mật khẩu</label>
+								{% render_field form.password class="md-10" placeholder="*********" %}
+							</p>
+
+							<p class="form-row"><input type="submit" class="btn-primary" name="Login" value="Login"></p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+{% endblock content %}

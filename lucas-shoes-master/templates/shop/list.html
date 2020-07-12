@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+	Mua sắm - Locas Shoes
+{% endblock title %}
+
+{% block content %}
+	<main class="site-main">
+		<div class="page-title page-title--classic mb-0" style="background-image:url({% static "img/page-title/12.jpg" %})">
+			<div class="container">
+				<div class="page-title__main">
+					<div class="row">
+						<div class="col-md-6 col-sm-6"><h1 class="text-uppercase mb-5">Mua sắm</h1></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section>
+			<div class="container">
+				<div class="br-filter-wrapper">
+					<div class="overflow-hidden">
+						<div class="br-left">
+							<a class="icon-filter"><span class="sr-only">Danh sách</span><i class="fa fa-th-list" aria-hidden="true"></i> </a>
+
+							<span class="ml-50">Có {{products.count}} sản phẩm</span></div>
+
+						<div class="br-right">
+							<div class="br-filter-group br-filter-group--sort">
+								<span>Sắp xếp theo</span>
+								<select id="filter_select" data-href="{% url 'shop:filter_product' %}">
+									<option value="0">Tất cả</option>
+									<option value="1">Phổ biến</option>
+									<option value="2">Xem nhiều</option>
+									<option value="3">Giá thấp tới cao</option>
+									<option value="4">Giá cao xuống thấp</option>
+								</select>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container" id="product_table_list">
+				{% include "shop/includes/product_table_list.html" %}
+			</div>
+		</section>
+	</main>
+{% endblock content %}
+{% block scripts %}
+	<script src="{% static "js/shop/list.js" %}"></script>
+	<script>
+		$(function(){
+			$('#filter_select').change(function(){
+				var $el = $('#filter_select');
+
+				$.ajax({
+					url: $(this).attr('data-href'),
+					type: 'get',
+					dataType: 'json',
+					data: {
+						'option': $el.val()
+					},
+					success: function(data){
+						
+						$('#product_table_list').html(data.html_product);
+					}
+				})
+			});
+		});
+	</script>
+{% endblock scripts %}
+
+
+
+
+
+

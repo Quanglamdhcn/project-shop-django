@@ -1,0 +1,79 @@
+{% load static %}
+
+<div class="br-product-popup">
+	<div class="br-product br-product-detail br-product-slide-vertical">
+		<div class="row no-gutters">
+			<div class="col-md-6">
+				<div class="br-product__media-wrapper">
+					<div class="br-product__media br-product-slide-vertical-image pb-0">
+						<div class="br-product__image">
+							<div class="slick-initialized slick-slider">
+								<div aria-live="polite" class="slick-list draggable">
+									<div class="slick-track" role="listbox" style="opacity: 1; width: 1870px;">
+										<div class="br-product__thumb slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide20" style="width: 374px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
+                                            <img class="js-replace-{{product.id}}" src="{{product.photos.first.file.url}}" alt="">
+                                        </div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="br-product-nav-wrapper">
+							<div class="br-slick-white slick-initialized slick-slider slick-vertical">
+								<div aria-live="polite" class="slick-list draggable" style="height: 444px;">
+				
+                                    <div class="slick-track" style="opacity: 1; height: 635px; top: 0px;" role="listbox">
+                                       {% for photo in product.photos.all  %}
+                                       <div class="br-product-nav__item slick-slide {% if forloop.first %}slick-current{% endif %} slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide30" style="width: 81px;"><div class="br-product__thumb">
+                                        <img class="js-thumbnai" data-rep="-{{product.id}}" src="{{photo.file.url}}" alt=""></div></div>
+                                      {% endfor %}
+                                    </div>
+                                 
+								</div>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+    				<div class="br-product-detail__container">
+    					<div class="br-product-detail__main">
+    						<h2 class="text-uppercase normal">{{product.name}}</h2>
+    						<span class="br-product__price fz-16">{{product.price}} đ</span>
+
+    						<div class="br-product__description"><p>{{product.description}}</p></div>
+
+    						<form action="" class="mb-20">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <label class="control-label">{{cart_form.size.label}}</label>
+                                        {{cart_form.size}}
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <label class="control-label">{{cart_form.quality.label}}</label>
+                                        {{cart_form.quality}}
+                                    </div>
+                                </div>
+                            </form>
+
+    						<div class="variation-price mb-20">
+    							<span class="br-product__price">$ 128.00 <del>$60.00</del></span>
+    						</div>
+    						<div class="br-product__action mb-15">
+    							<div class="tb">
+    								<div class="table-cell-center"><a href="#" class="btn btn-default btn-cart" data-placement="top" title="" data-original-title="cart"><i class="fa fa-shopping-bag"></i> <span>Thêm vào giỏ hàng</span></a></div>
+
+    							</div>
+    						</div>
+    					</div>
+
+    				</div>
+    			</div>
+		</div>
+	</div>
+
+	<button title="Close (Esc)" type="button" class="close mfp-close"  data-dismiss="modal">×</button>
+</div>

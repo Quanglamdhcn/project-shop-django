@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+	Quản lý đơn đặt hàng
+{% endblock title %}
+
+{% block content %}
+	<main class="site-main">
+		<section class="section table-cart">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h1>Có {{orders.count}} đơn đặt hàng</h1>
+						</div>
+						<div class="bs-component">
+
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Họ và tên</th>
+										<th scope="col">Địa chỉ</th>
+										<th scope="col">Phone</th>
+										<th scope="col">Ngày đặt</th>
+		<!-- 								<th scope="col">Chi tiết đơn hàng</th>
+		<th scope="col">Giảm giá</th>
+		<th scope="col">Tổng</th> -->
+										<th scope="col">Lưu ý</th>
+										<th scope="col">Thanh toán</th>
+										<th scope="col">Chi tiết</th>
+										<th scope="col">Xóa</th>
+									</tr>
+								</thead>
+								<tbody id="orders">
+									{% include "orders/includes/orders_manage_tbody.html" %}
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xl-5">
+						<a class="btn btn-success" href="{% url "orders:export_xls" %}" id="create_coupon"><i class="fa fa-file-excel-o"></i> Xuất File Excel</a>
+						<a class="btn btn-warning js_delte_all_item" href="{% url 'orders:html_to_pdf' %}"><i class="fa fa-file-pdf-o"></i> Xuất File pdf</a>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</main>
+
+{% endblock content %}
+
+{% block scripts %}
+	<script>
+	$(function(){
+		$('#orders').on('click','.js-delete', function(){
+			var $el = $(this);
+
+			$.ajax({
+				url: $el.attr('data-href'),
+				type: 'get',
+				dataType:'json',
+				success: function(data){
+					$('#orders').html(data.tbody);
+				}
+			});
+
+			return false;
+		});
+		$('#orders').on('click','#change_status_paid', function(){
+			var $el = $(this);
+
+			$.ajax({
+				url: $el.attr('data-href'),
+				dataType:'json',
+				type: 'get',
+				success: function(data){
+					if (data.status){
+						$el.html('<a href="" style="color:#21b53e"><i class="fa fa-check"></i></a>');
+					} else {
+						$el.html('<a href="" style="color:#b53b3b"><i class="fa fa-times"></i></a>');
+					}
+				}
+			});
+
+			return false;
+		});
+	});
+	</script>
+{% endblock scripts %}

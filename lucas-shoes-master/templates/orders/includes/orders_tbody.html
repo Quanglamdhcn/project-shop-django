@@ -1,0 +1,26 @@
+{% load humanize %}
+{% load widget_tweaks %}
+{% for item in order.items.all  %}
+	{% with product=item.product %}
+	<tr>
+			<td><a class="cart-image" href="{% url "shop:product_detail" product.slug %}"><img width="78" height="107" src="{{product.photos.first.file.url}}" alt=""></a></td>
+
+			<td><a href="{% url "shop:product_detail" product.slug %}" class="fz-16">{{product.name}}</a></td>
+
+			<td><span class="br-product__price">{{product.price|intcomma}} vnđ</span></td>
+			<td>
+				<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+					{{item.size}}
+				</span>
+			</td>
+			<td>
+				<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+					{{item.quantity }}
+				</span>
+			</td>
+
+			<td><span class="br-product__price">{{item.get_cost|intcomma}} vnđ</span></td>
+
+	</tr>
+	{% endwith %}
+{% endfor %}

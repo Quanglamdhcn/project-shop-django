@@ -1,0 +1,95 @@
+<!doctype html>
+{% load humanize %}
+{% load static %}
+{% load to_orders %}
+{% load widget_tweaks %}
+<html lang="">
+<head>
+	<style>
+	body{
+		font-size: 11px;
+	}
+	table, td, th {  
+	  border: 1px solid #ddd;
+	  text-align: left;
+	}
+
+	table {
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+
+	th, td {
+	  padding: 5px;
+	}
+</style>
+
+</head>
+<body>
+<div id="page" class="site">
+	<main class="site-main">
+		<section class="section table-cart">
+			<div class="container">
+				<h1>Lucas Shoes</h1>
+				<hr>
+				<div class="row">
+					
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h1>Có {{orders.count}} đơn đặt hàng</h1>
+						</div>
+						<div class="aa_htmlTable">
+
+							<table class="aa_h2">
+								<thead>
+									<tr>
+										<th scope="col">Họ và tên</th>
+										<th scope="col">Địa chỉ</th>
+										<th scope="col">Phone</th>
+										<th scope="col">Ngày đặt</th>
+		<!-- 								<th scope="col">Chi tiết đơn hàng</th>
+		<th scope="col">Giảm giá</th>
+		<th scope="col">Tổng</th> -->
+										<th scope="col">Tổng</th>
+										<th scope="col">Thanh toán</th>
+									</tr>
+								</thead>
+								<tbody id="orders">
+									{% if orders %}
+										{% for order in orders  %}
+										<tr>
+											<td><b>{{order.get_full_name}}</b></td>
+											<td>{{order.address}}, {{order.city}}</td>
+											<td>{{order.phone|to_phone}}</td>
+											<td>{{order.created|date:'H:i, d/m/Y'}}</td>
+											<td>
+												{{order.get_total_cost|intcomma}} vnđ
+												{% if order.coupon %}
+													- ({{order.discount}}%)
+												{% endif %}
+											</td>
+											<td style="text-align: center;" >
+												{% if order.paid %}
+													&#9745;
+												{% else %}
+													&#9746;
+												{% endif %}
+											</td>
+										</tr>
+										{% endfor %}
+									{% else %}
+									<tr>
+										<td colspan="11">Chưa có đơn hàng nào</td>
+									</tr>
+									{% endif %}
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</main>
+</div>

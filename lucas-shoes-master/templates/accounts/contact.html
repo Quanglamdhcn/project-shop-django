@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+	Liên hệ với chúng tôi
+{% endblock title %}
+
+{% block content %}
+	<main class="site-contact">
+
+		<section class="section">
+			<div class="container">
+
+				<div class="pt-80 pb-70 br-bb">
+					<div class="row">
+						<div class="col-md-2"><h2 class="h1 text-uppercase">Cửa hàng</h2></div>
+						<div class="col-md-4">
+							<div class="br-contact-info">
+								<div class="br-contact-info-group mb-20">
+									<h6 class="text-uppercase mb-5">Địa chỉ</h6><p class="fz-16 dark">67 Cù Chính Lan, Hà Nội </p>
+								</div>
+
+								<div class="br-contact-info-group mb-20"><h6 class="text-uppercase mb-5">Điện thoại</h6>
+									<p class="fz-16 dark">0972 649 504</p>
+									<p class="fz-16 dark">0823 659 956</p>
+								</div>
+
+								<div class="br-contact-info-group mb-20"><h6 class="text-uppercase mb-5">email</h6>
+									<span class="__cf_email__">lucas.shoes@gmail.com</span>
+								</div>
+
+								<div class="br-contact-info-group mb-20">
+									<h6 class="text-uppercase mb-5">Mạng xã hội</h6>
+									<ul class="nav-social">
+										<li><a href="#" target="_blank"><i class="fa fa-instagram"></i> <span class="sr-only">Google Plus</span></a></li>
+										<li><a href="https://www.facebook.com/LucasShoes.com.vn/" target="_blank"><i class="fa fa-facebook"></i> <span class="sr-only">Facebook</span></a></li>
+										<li><a href="#" data-toggle="tooltip" target="_blank" data-original-title="" title=""><i class="fa fa-twitter"></i> <span class="sr-only">Twitter</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div style="display:none" id="js_ms" class="alert alert-dismissible alert-success">
+								<i class="fa fa-check" aria-hidden="true"></i>
+								<strong>Đã gửi</strong> Cảm ơn bạn đã cho chúng tôi biết
+							</div>
+							<h3 class="h2 text-uppercase mb-20">Cho chúng tôi biết bạn nghĩ gì?</h3>
+							<form id="js_contact" data-href="{% url "accounts:ajax_save_contact" %}" method="post" class="form-contact" novalidate>
+								{% csrf_token %}
+
+								<div class="row">
+									<div class="col-md-6">
+										<p>
+											<label class="sr-only">Tên</label>
+											{% render_field form.name placeholder="Tên" %}
+											<span class="{{form.name.id_for_label}}"></span>
+										</p>
+									</div>
+
+									<div class="col-md-6">
+										<p>
+											<label class="sr-only">Email</label>
+											{% render_field form.email placeholder="Email" %}
+											<span class="{{form.email.id_for_label}}"></span>
+										</p>
+									</div>
+								</div>
+
+								<p>
+									<label class="sr-only">Tiêu đề</label>
+									{% render_field form.title placeholder="Tiêu đề" %}
+									<span class="{{form.title.id_for_label}}"></span>
+								</p>
+
+								<p class="mb-30">
+									<label class="sr-only">Nội dung bạn muốn gửi</label>
+									{% render_field form.content placeholder="Bạn muốn nhắn gửi shop điều gì" %}
+									<span class="{{form.content.id_for_label}}"></span>
+								</p>
+								<p><input type="submit" value="Gửi" class="submit btn-primary"></p>
+
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="opening-hours pt-80">
+					<div class="row">
+						<div class="col-md-2"><h2 class="h1 text-uppercase">Giờ làm việc</h2></div>
+						<div class="col-md-4">
+							<table class="table table-hover table-opening">
+								<thead>
+									<tr>
+										<th><span class="h5 text-uppercase mb-0">ngày</span></th>
+										<th><span class="h5 text-uppercase mb-0">giờ</span></th>
+									</tr>
+								</thead>
+								<tbody class="fz-16">
+									<tr><td>Thứ 2</td><td class="dark">Đóng cửa</td></tr>
+									<tr><td>Thứ 3</td><td class="dark">11.00 - 07.00</td></tr>
+									<tr><td>Thứ 4</td><td class="dark">11.00 - 07.00</td></tr>
+									<tr><td>Thứ 5</td><td class="dark">11.00 - 07.00</td></tr>
+									<tr><td>Thứ 6</td><td class="dark">11.00 - 07.00</td></tr>
+									<tr><td>Thứ 7</td><td class="dark">11.00 - 07.00</td></tr>
+									<tr><td>Chủ nhật</td><td class="dark">11.00 - 05.00</td></tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<div id="contact-map" data-init="gmap" data-lat="33.3209127" data-lng="-111.8005377" data-zoom="14" data-style="gray">
+								<div data-map="marker" data-lat="33.3209127" data-lng="-111.8005377" data-icon="img/logo-contact.png">Brilliant Store in UK</div>
+							</div>
+
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</main>
+{% endblock content %}
+{% block scripts %}
+	<script src="{% static 'js/accounts/ajax_save_contact.js' %}"></script>
+{% endblock scripts %}

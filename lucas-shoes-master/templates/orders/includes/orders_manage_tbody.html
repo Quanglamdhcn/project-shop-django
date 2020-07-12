@@ -1,0 +1,29 @@
+{% load to_orders %}
+{% if orders %}
+	{% for order in orders  %}
+	<tr>
+		<td><b>{{order.get_full_name}}</b></td>
+		<td>{{order.address}}, {{order.city}}</td>
+		<td>{{order.phone|to_phone}}</td>
+		<td>{{order.created|date:'H:i, d/m/Y'}}</td>
+		<td>{{order.note}}</td>
+		<td style="text-align: center;" id='change_status_paid' data-href="{% url "orders:change_status_paid" order.id %}">
+			{% if order.paid %}
+				<a href="" style="color:#21b53e"><i class="fa fa-check"></i></a>
+			{% else %}
+				<a href="" style="color:#b53b3b"><i class="fa fa-times"></i></a>
+			{% endif %}
+		</td>
+		<td>
+			<a href="{% url "orders:order_detail" order.id %}">Chi tiết</a>
+		</td>
+		<td>
+			<a data-href="{% url "orders:order_delete" order.id %}" class="js-delete" href=""><i class="fa fa-trash-o" style="color:#d27575"></i></a>
+		</td>
+	</tr>
+	{% endfor %}
+{% else %}
+<tr>
+	<td colspan="11">Chưa có đơn hàng nào</td>
+</tr>
+{% endif %}

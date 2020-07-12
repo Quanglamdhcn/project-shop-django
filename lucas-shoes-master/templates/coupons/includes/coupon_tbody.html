@@ -1,0 +1,24 @@
+{% if coupons %}
+	{% for co in coupons  %}
+	<tr>
+		<td><b>{{co.code}}</b></td>
+		<td>{{co.valid_form|date:'H:i, d/m/Y'}}</td>
+		<td>{{co.valid_to|date:'H:i, d/m/Y'}}</td>
+		<td>{{co.discount}}%</td>
+		<td>{% if co.active %}
+			Có {% else %} Không
+		{% endif %}</td>
+		<td>{{co.orders.count}}</td>
+		<td>
+			<a data-href="{% url "coupons:coupon_update" co.id %}" class="js-edit" href=""><i class="fa fa-pencil" style="color:#59a2d5"></i></a>
+		</td>
+		<td>
+			<a data-href="{% url "coupons:coupon_delete" co.id %}" class="js-delete" href=""><i class="fa fa-trash-o" style="color:#d27575"></i></a>
+		</td>
+	</tr>
+	{% endfor %}
+{% else %}
+<tr>
+	<td colspan="8">Chưa có mã giảm giá nào</td>
+</tr>
+{% endif %}

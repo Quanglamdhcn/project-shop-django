@@ -1,0 +1,55 @@
+{% load humanize %}
+<div class="dropdown dropdown-animation">
+	<a href="#" data-toggle="dropdown" role="button">
+		<i class="fa fa-shopping-bag" aria-hidden="true"></i> 
+		{% if cart|length > 0 %}
+			<span class="count cart_count" >{{cart|length}}</span>
+		{% endif %}
+	</a>
+	<div class="dropdown-menu dropdown-cart">
+		{% if cart|length > 0 %}
+		<div class="list-product-mini">
+			<ul class="list-style-none">
+				<li>
+					{% for item in cart %}
+					{% with product=item.product  %}
+						<div class="product-mini">
+							<a href="#" class="product-mini__img">
+								<img src="{{product.photos.first.file.url}}" alt="">
+								<span>{{item.quantity}}</span>
+							</a>
+							<div class="product-mini__body">
+								<h4 class="br-product__name"><a href="#" tabindex="0">{{product.name}}</a></h4>
+								<span class="br-product__price">{{product.price|intcomma}} vnđ </span>
+								/ <span class="br-product__price">size : {{item.size}}</span>
+							</div>
+							<div class="product-mini__button">
+								<a href="{% url "cart:cart_detail" %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<a class="js_remove_cart" data-href="{% url "cart:ajax_cart_remove" product.id item.size %}" class="close"><i class="fa fa-times" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					{% endwith %}
+					{% endfor %}
+				</li>
+
+
+			</ul>
+			<div class="total-product overflow-hidden">
+				<h5 class="text-uppercase"><span class="pull-left">Tổng giá</span>
+					<span id="total_price" class="pull-right">{{cart.get_total_price|intcomma}} vnđ</span>
+				</h5>
+			</div>
+
+			<div class="product-mini__action">
+				<a href="{% url "orders:checkout" %}" class="btn btn-primary">Thanh toán</a>
+				<a href="{% url "cart:cart_detail" %}" class="btn btn-default">Giỏ hàng</a>
+			</div>
+
+		</div>
+		{% else %}
+		<div class="total-product">
+			<h5 class="text-uppercase"><span class="pull-left">Giỏ hàng trống</span></h5>
+		</div>
+		{% endif %}
+	</div>
+</div>

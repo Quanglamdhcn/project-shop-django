@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+<form method="post" data-href="{% url "coupons:coupon_update" coupon_id %}" id="js_update_item_form" novalidate>
+	{% csrf_token %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<td>{%  render_field form.code %}<span class="{{form.code.id_for_label}}"></span></td>
+				<td>{%  render_field form.valid_form class="datetimepicker" %}<span class="{{form.valid_form.id_for_label}}"></span></td>
+				<td>{%  render_field form.valid_to class="datetimepicker" %}<span class="{{form.valid_to.id_for_label}}"></span></td>
+				<script>
+						$(function(){
+							$(".datetimepicker").datetimepicker({format: 'd/m/Y H:i',});
+						});
+					</script>
+				<td>{%  render_field form.discount %}<span class="{{form.discount.id_for_label}}"></span></td>
+				<td>
+					<label class="c-input c-checkbox dark">
+						{%  render_field form.active %}<span class="c-indicator"></span>
+					</label>
+				</td>
+				<td><button style="submit" id="js-update" class="btn btn-info btn-sm">Cập nhật</button></td>
+				<td><a id="js-cancel" class="btn btn-default btn-sm">Hủy</a></td>
+			</tr>
+		</tbody>
+	</table>
+</form>

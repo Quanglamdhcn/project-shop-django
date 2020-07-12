@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+	Lucas Shoes - Trang mua sắm giày cao cấp
+{% endblock title %}
+
+{% block content %}
+
+	<main class="site-main site-homepage">
+		<section class="pb-20">
+			<div class="container">
+				<div class="br-policy">
+					<div class="br-policy__item">
+						<div class="br-policy__icon"><i class="br br-car"></i></div>
+						<div class="br-policy__text"><h5 class="text-uppercase mb-0">Miễn phí ship</h5><span>Khi đơn hàng lớn hơn 1Tr</span></div>
+					</div>
+					<div class="br-policy__item">
+						<div class="br-policy__icon"><i class="br br-money"></i></div>
+						<div class="br-policy__text"><h5 class="text-uppercase mb-0">Đổi trả trong 5 ngày</h5><span></span></div>
+					</div>
+					<div class="br-policy__item">
+						<div class="br-policy__icon"><i class="br br-clock"></i></div>
+						<div class="br-policy__text"><h5 class="text-uppercase mb-0">Hỗ trợ 24/7</h5><span></span></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="pb-70 hidden-xs">
+			<div class="container">
+				<div class="br-card-wrapper br-card-banner" data-item="3" data-gap="5" style="position: relative; height: 494.5px;">
+					<div class="grid-sizer"></div>
+					<div class="br-card inner-title" style="position: absolute; left: 0%; top: 0px;">
+						<div class="br-card__media"><div class="br-card__thumb"><a><img src="{% static "img/banners/banner-small.jpg" %}" alt=""></a></div></div>
+					</div>
+
+					<div class="br-card br-card--quad-w2 inner-title" style="position: absolute; left: 33.2751%; top: 0px;">
+						<div class="br-card__media">
+							<div class="slide-banner br-slick-white slick-initialized slick-slider" role="toolbar">
+
+								<div aria-live="polite" class="slick-list draggable" style="height: 488px;">
+									<div class="slick-track" style="opacity: 1; width: 2274px; left: 0px;">
+										<div class="br-card__thumb slick-slide slick-current slick-active" style="width: 758px;">
+											<a href="{% url "shop:product_list" %}" tabindex="0"><img src="{% static "img/banners/bn-2.jpg" %}" alt=""></a>
+											<div class="br-card__main-noh">
+												<div class="slide-banner-content">
+													<div class="tb-cell">
+														<span class="uppercase fz-20 white">The person lighting up</span>
+														<h2 class="white font-secondary white">Lucas Shoes</h2>
+														<span class="uppercase fz-20 white mb-40 mb-md-30">Germary</span>
+														<a href="{% url "shop:product_list" %}" class="btn btn-primary" tabindex="0">Trang mua sắm</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="br-card inner-title" style="position: absolute; left: 0%; top: 247px;">
+						<div class="br-card__media">
+							<div class="br-card__thumb"><a ><img src="{% static "img/banners/banner-small-2.jpg" %}" alt=""></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+		<section>
+			<div class="container">
+				<div class="br-bb pb-40">
+					<div class="br-relative">
+						<h2 class="br-title">NEW</h2>
+					</div>
+
+					<div class="row" id="products_home">
+						{% include "shop/includes/products_home.html" %}
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- {% include "blog/includes/news.html" %} -->
+	</main>
+{% endblock content %}
+{% block scripts %}
+	<script>
+		$(function(){
+			$('#products_home').on('click','.delete_product',function(){
+				$.ajax({
+					url: $(this).attr('data-href'),
+					dataTpe: "json",
+					type: "get",
+					success : function(data){
+						$('#products_home').html(data.products_home);
+					}
+				});
+			});
+
+			$('#products_home').on('click','.js_add_cart', function(){
+				$(this).closest('form').submit();
+			});
+		});
+	</script>
+{% endblock scripts %}

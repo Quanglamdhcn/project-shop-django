@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+	Biểu đồ bán hàng
+{% endblock title %}
+
+{% block content %}
+<main class="site-typo">
+    <div class="container">
+    	<section class="section pb-40">
+    		<h2 class="h1 text-uppercase text-center mb-25">Biểu đồ</h2>
+    		<div id="container" data-href="{% url "orders:ajax_get_graph" %}">
+    			
+    		</div>
+    	</section>
+    </div>
+</main>
+{% endblock content %}
+
+{% block scripts %}
+	<script src="{% static "js/orders/highcharts.src.js" %}"></script>
+	<script>
+		$.ajax({
+			url: $('#container').attr('data-href'),
+			dataType: 'json',
+			success: function(data){
+				Highcharts.chart('container', data);
+			}
+		});
+	</script>
+{% endblock scripts %}

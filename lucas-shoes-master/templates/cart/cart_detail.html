@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load thumbnail %}
+{% load widget_tweaks %}
+
+{% block title %}
+	Giỏ hàng của tôi
+{% endblock title %}
+
+{% block content %}
+	<main class="site-main">
+
+		<section class="section table-cart">
+			<div class="container">
+				{% if message %}
+				<div class="alert alert-dismissible alert-success">
+					<i class="fa fa-check" aria-hidden="true"></i>
+					<strong>Cập nhật thành công</strong>
+				</div>
+				{% endif %}
+				<div class="table-responsive">
+					<table class="table table-hover table_cart">
+						<thead>
+							<tr>
+								<td scope="col">Ảnh</td>
+								<td scope="col">Tên</td>
+								<td>Giá</td>
+								<td>Size</td>
+								<td>Số lượng</td>
+								<td>Tổng</td>
+								<td>Cập nhật</td>
+								<td>Xóa</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in cart  %}
+								{% with product=item.product %}
+								<tr>
+									<form method="post" action="{% url 'cart:update_cart' product.id item.size %}">
+										{% csrf_token %}
+									<td>
+										<a class="cart-image" href="{% url "shop:product_detail" product.slug %}">
+											{% thumbnail product.photos.first.file "78x107" as im %}
+												<img src="{{im.url}}" alt="">
+											{% endthumbnail %}
+										</a>
+									</td>
+
+									<td><a href="{% url "shop:product_detail" product.slug %}" class="fz-16">{{product.name}}</a></td>
+
+									<td><span class="br-product__price">{{product.price|intcomma}} vnđ</span></td>
+									<td>
+										<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+											{{item.update_quantity_form.size}}
+										</span>
+									</td>
+									<td>
+										<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+											{{item.update_quantity_form.quantity}}
+										</span>
+									</td>
+									{{item.update_quantity_form.update_quantity}}
+
+									<td><span class="br-product__price">{{item.total_price|intcomma}} vnđ</span></td>
+									<td>
+										<input type="submit" value="cập nhật" class="btn">
+									</td>
+						
+									<td><a class="red close" href="{% url "cart:cart_remove" product.id item.size %}"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+									</form>
+								</tr>
+								{% endwith %}
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6 pb-40">
+						<div class="alert alert-dark">
+							<p>Nếu có mã giảm giá hãy nhập phía dưới</p>
+						</div>
+
+						<form class="js-coupon"  data-href="{% url "coupons:coupon_apply" %}" method="post" novalidate>
+							{% csrf_token %}
+							<div class="form-group">
+								<label class="control-label">Mã</label>
+								<div class="input-group">
+									{% render_field coupon_apply_form.code %}
+									<span class="input-group-btn"><button name="ACTION" value="COUPON" class="btn btn-default" type="submit">Áp dụng</button></span>
+								</div>
+								<span id="msg">
+									
+								</span>
+							</div>
+
+						</form>
+						<div class="cart-total mb-70">
+							<table>
+								<tbody>
+									<tr class="cart-subtotal"><th>Được giảm:</th><td class="js-discount">- {{cart.get_discount|intcomma}} vnđ ( {{cart.coupon.discount}} %)</td></tr>
+									<tr class="shipping"><th>Phí Ship:</th><td>Free Shipping</td></tr>
+									<tr class="order-total"><th>Tổng thanh toán:</th><td class="js-total-price">{{cart.get_total_price|intcomma}} vnđ</td></tr>
+									<tr class="order-total"><th>Tổng thanh toán áp dụng giảm giá:</th><td><strong><span class="amount js-total-price-discount">{{cart.get_total_price_after_discount|intcomma}} vnđ</span></strong></td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+		
+				<div class="text-center">
+					<h5 class="text-uppercase">Tổng</h5>
+					<h2 class="total-price mb-25">{{cart.get_total_price_after_discount|intcomma}} vnđ</h2>
+					<a href="{% url 'shop:product_list' %}" class="btn btn-lg btn-outline btn-default">Tiếp tục mua sắp</a>
+					<a href="{% url "orders:checkout" %}" class="btn btn-lg btn-default">Đi tới thanh toán</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+{% endblock content %}
+
+{% block scripts %}
+	<script>
+		$(function(){
+
+			function numberWithCommas(x) {
+		    	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			};
+
+			$('form.js-coupon').submit( function(){
+				
+				$.ajax({
+					url: $('form.js-coupon').attr("data-href"),
+					dataType:"json",
+					type: 'post',
+					data: $('form.js-coupon').serialize(),
+					success: function(data){
+						if (data.is_coupon){
+							$('.js-discount').text("- "+numberWithCommas(data.discount)+" vnđ ( "+data.percent+"% )");
+							$('.js-total-price').text(numberWithCommas(data.total_price)+" vnđ");
+							$('.js-total-price-discount').text(numberWithCommas(data.total_price_after_discount)+" vnđ");
+							$('.total-price').text(numberWithCommas(data.total_price_after_discount)+" vnđ");
+							$('#msg').html('<small class="form-text text-muted empty" style="color:#0f921c;">Chúc mừng ! Đơn hàng của bạn đã được giảm '+data.percent+'% </small>')
+						} else {
+							$('#msg').html('<small class="form-text text-muted empty" style="color:#ff0505;">Mã giảm giá không đúng</small>');
+							$('.js-discount').text("- 0 vnđ ( 0% )");
+							$('.js-total-price').text(numberWithCommas(data.total_price)+" vnđ");
+							$('.js-total-price-discount').text(numberWithCommas(data.total_price)+" vnđ");
+							$('.total-price').text(numberWithCommas(data.total_price)+" vnđ");
+						}
+
+					}
+				});
+
+				return false;
+			});
+		});
+	</script>
+{% endblock scripts %}

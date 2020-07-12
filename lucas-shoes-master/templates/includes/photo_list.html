@@ -1,0 +1,7 @@
+{% for photo in photos  %}
+	<div class="col-4">
+		<div class="card" style="width: 18rem;">
+		  <img class="card-img-top" src="{{photo.file.url}}">
+		</div>
+	</div>
+{% endfor %}

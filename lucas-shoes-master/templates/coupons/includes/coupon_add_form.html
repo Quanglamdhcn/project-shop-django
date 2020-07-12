@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+<form action="{% url "coupons:ajax_add_coupons" %}" method="post" id="js_add_item_form" novalidate>
+	{% csrf_token %}
+	<table class="table">
+		<tbody id="coupons">
+			<tr>
+				<td>{%  render_field form.code placeholder="Tên mã" %}<span class="{{form.code.id_for_label}}"></span></td>
+				<td>{%  render_field form.valid_form placeholder="Ngày bắt đầu" class="datetimepicker" %}
+					
+					<span class="{{form.valid_form.id_for_label}}"></span>
+				</td>
+				<td>{%  render_field form.valid_to placeholder="Ngày kết thúc" class="datetimepicker" %}<span class="{{form.valid_to.id_for_label}}"></span></td>
+				<script>
+						$(function(){
+							$(".datetimepicker").datetimepicker({format: 'd/m/Y H:i',});
+						});
+				</script>
+				<td>{%  render_field form.discount placeholder="Phần trăm 1-100" %}<span class="{{form.discount.id_for_label}}"></span></td>
+				<td>
+					<label class="c-input c-checkbox dark">
+						{%  render_field form.active %}<span class="c-indicator"></span>
+					</label>
+				</td>
+				<td><button style="submit" id="js-add" class="btn btn-info btn-sm">Thêm</button></td>
+				<td><a id="js-cancel" class="btn btn-default btn-sm">Hủy</a></td>
+			</tr>
+		</tbody>
+	</table>
+</form>

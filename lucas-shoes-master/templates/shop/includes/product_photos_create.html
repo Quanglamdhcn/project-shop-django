@@ -1,0 +1,48 @@
+{% load static %}
+{% load thumbnail %}
+
+<div class="col-lg-6">
+	<div class="br-product__media br-product-slide-vertical-image">
+		<div class="br-product__image">
+			<div class="js-br-product-image">
+				{% if product.photos %}
+				<div>
+                    <div class="br-product__thumb">
+                    	{% thumbnail product.photos.first.file "458x617" as im %}
+							<img src="{{im.url}}" alt="">
+						{% endthumbnail %}
+                    </div>
+                </div>
+                {% else %}
+                <div>
+                    <div class="br-product__thumb"><img src="{% static "img/products/demo/shoes.jpg" %}" alt=""></div>
+                </div>
+				{% endif %}
+			</div>
+
+		</div>
+		<div class="br-product__label-wrapper"><span class="br-product__label sale">SALE</span></div>
+
+		<div class="br-product-nav-wrapper">
+			<div class="js-br-product-nav br-slick-white">
+                {% for photo in product.photos.all  %}
+				<div class="br-product-nav__item">
+					<div class="br-product__thumb">
+						{% thumbnail photo.file "78x107" as im %}
+							<img src="{{im.url}}" alt="">
+						{% endthumbnail %}
+					</div>
+				</div>
+				{% empty %}
+				<div class="br-product-nav__item">
+					<div class="br-product__thumb">
+						<img src="{% static "img/products/demo/shoes.jpg" %}" alt="">
+					</div>
+				</div>
+                {% endfor %}
+				
+			</div>
+		</div>
+
+	</div>
+</div>

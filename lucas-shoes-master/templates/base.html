@@ -1,0 +1,69 @@
+<!doctype html>
+{% load static %}
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<title>{% block title %}
+		
+	{% endblock title %}</title>
+
+	<link rel="stylesheet" href="{% static "css/fonts/font-awesome.css" %}">
+	<link rel="stylesheet" href="{% static "css/vendor/slick.css" %}">
+	<link rel="stylesheet" href="{% static "css/vendor/magnific-popup.css" %}">
+	<link rel="stylesheet" href="{% static "css/vendor/select2.css" %}">
+	<link rel="stylesheet" href="{% static "css/vendor/awemenu.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+
+	<link rel="stylesheet" href="{% static "css/style.css" %}">
+	<script src="{% static "js/vendor/modernizr-2.8.3.min.js" %}"></script>
+	<script src="{% static "js/vendor/jquery-1.12.0.min.js" %}"></script>
+	<script src="{% static "js/vendor/fastclick.js" %}"></script>
+
+	{% block stylesheet %}
+		
+	{% endblock stylesheet %}
+</head>
+<body>
+        
+		<div id="page" class="site">
+
+			{% include "includes/header.html" %}
+
+			{% block content %}
+				
+			{% endblock content %}
+			
+		</div>
+
+		{% if section != 'manage' %}
+			{% include "includes/footer.html" %}
+		{% endif %}
+
+		<script src="{% static "js/plugins/jquery-ui.min.js" %}"></script>
+		<script src="{% static "js/plugins/bootstrap.min.js" %}"></script>
+		<script src="{% static "js/plugins/awemenu.min.js" %}"></script>
+		<script src="{% static "js/plugins/jquery.fittext.js" %}"></script>
+		<script src="{% static "js/plugins/masonry.pkgd.min.js" %}"></script>
+		<script src="{% static "js/plugins/imagesloaded.pkgd.min.js" %}"></script>
+		<script src="{% static "js/plugins/isotope.pkgd.min.js" %}"></script>
+		<script src="{% static "js/plugins/slick.min.js" %}"></script>
+		<script src="{% static "js/plugins/jquery.countdown.min.js" %}"></script>
+		<script src="{% static "js/plugins/jquery.hoverdir.js" %}"></script>
+		<script src="{% static "js/plugins/select2.min.js" %}"></script>
+
+		<script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+     	<script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+
+		<script src="{% static "js/plugins/jquery.magnific-popup.min.js" %}"></script>
+		<script src="{% static "js/main.js" %}"></script>
+		<script src="{% static "js/cart/cart-header.js" %}"></script>
+		{% block scripts %}
+			
+		{% endblock scripts %}
+
+
+	</body>
+</html>
