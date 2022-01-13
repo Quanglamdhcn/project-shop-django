@@ -9,7 +9,7 @@ django-taggit==1.1.0
 django-weasyprint==0.5.4
 django-widget-tweaks==1.4.5
 html5lib==1.0.1
-Pillow==6.2.1
+Pillow==9.0.0
 pycparser==2.19
 Pyphen==0.9.5
 pytz==2019.3
